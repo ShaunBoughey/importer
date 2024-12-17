@@ -31,6 +31,8 @@ func NewPostgresDB(cfg *config.AppConfig) (*PostgresDB, error) {
 	}, nil
 }
 
+var _ models.CustomerRepository = (*PostgresDB)(nil)
+
 func (p *PostgresDB) Close() error {
 	return p.db.Close()
 }

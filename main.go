@@ -7,10 +7,12 @@ import (
 
 	_ "github.com/lib/pq"
 
+	"importer/api"
 	"importer/config"
 	"importer/db"
 	"importer/excel"
 	"importer/generator"
+	"importer/models"
 )
 
 func main() {
@@ -43,15 +45,21 @@ func main() {
 		return
 	}
 
-	// Initialize database
-	db, err := db.NewPostgresDB(cfg)
-	if err != nil {
-		log.Fatal(err)
+	// Initialize either API client or DB based on config
+	var dataStore models.CustomerRepository
+	if cfg.API.UseAPI {
+		dataStore = api.NewClient(cfg)
+	} else {
+		postgresDB, err := db.NewPostgresDB(cfg)
+		if err != nil {
+			log.Fatal(err)
+		}
+		dataStore = postgresDB
 	}
-	defer db.Close()
+	defer dataStore.Close()
 
 	// Process import
-	importer := excel.NewImporter(db, cfg)
+	importer := excel.NewImporter(dataStore, cfg)
 	if err := importer.Import(*inputFile); err != nil {
 		log.Fatal(err)
 	}
