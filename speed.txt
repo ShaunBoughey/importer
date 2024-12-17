@@ -16,3 +16,7 @@ Generation Summary:
 2024/12/16 23:32:54 Inserted/Updated 100000 accounts
 2024/12/16 23:32:54 Inserting customer-account links...
 2024/12/16 23:34:17 Import completed successfully in 3m40.1324703s
+
+
+2024/12/17 01:35:20 Sending link payload: {"customer_id":100000,"account_id":200000}
+2024/12/17 01:35:20 Import completed successfully in 27m57.8808728s
